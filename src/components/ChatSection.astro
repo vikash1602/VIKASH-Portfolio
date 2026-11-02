@@ -1,0 +1,50 @@
+---
+/**
+ * Dedicated chatbot section — TALK_TO_VIKASH.exe — between SELECTED WORKS and
+ * CONTACT. Black terminal-window surface in the existing section rhythm.
+ * Shares the same conversation state as the floating widget.
+ */
+import ChatPanel from './ChatPanel.astro';
+---
+
+<section id="chat" class="scroll-mt-24 border-b-4 border-neo-black bg-neo-black py-24 text-white md:py-32" aria-label="Portfolio chat assistant">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div data-reveal>
+      <h2 class="font-display text-[11vw] leading-none font-bold uppercase tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+        TALK_TO_VIKASH<span class="text-neo-green">.exe</span>
+      </h2>
+      <p class="mt-4 font-mono text-sm tracking-widest text-white/70">
+        &gt;_ Curious about my work? Ask my AI assistant.
+      </p>
+    </div>
+
+    <div
+      class="mt-12 border-4 border-white/20 bg-neo-black shadow-hard-md"
+      data-reveal
+    >
+      <!-- Mini window header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b-4 border-neo-black bg-[#1d1d1d] px-4 py-3">
+        <p class="flex items-center gap-3">
+          <span class="flex gap-1.5" aria-hidden="true">
+            <span class="h-3 w-3 rounded-full bg-neo-red"></span>
+            <span class="h-3 w-3 rounded-full bg-neo-yellow"></span>
+            <span class="h-3 w-3 rounded-full bg-neo-green"></span>
+          </span>
+          <span class="font-mono text-xs font-bold tracking-widest text-white">TALK_TO_VIKASH.exe</span>
+        </p>
+        <p class="flex items-center gap-2 font-mono text-[11px] font-bold tracking-widest text-neo-green">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          PORTFOLIO_ASSISTANT: ONLINE
+        </p>
+      </div>
+
+      <div class="flex h-[560px] max-h-[75vh] flex-col border-neo-black/40 bg-white text-neo-black">
+        <ChatPanel variant="section" />
+      </div>
+
+      <p class="border-t-2 border-white/10 px-4 py-2.5 font-mono text-[11px] tracking-widest text-white/40">
+        $ folio --session-only _ // CHAT HISTORY IS NOT STORED
+      </p>
+    </div>
+  </div>
+</section>

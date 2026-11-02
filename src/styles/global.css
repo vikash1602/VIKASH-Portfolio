@@ -1,0 +1,425 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens (neo-brutalist palette — see README "Design system")
+--------------------------------------------------------------------------- */
+@theme {
+  --color-neo-white: #fffdf5;
+  --color-neo-black: #121212;
+  --color-neo-yellow: #fbff48;
+  --color-neo-pink: #ff70a6;
+  --color-neo-blue: #3b82f6;
+  --color-neo-green: #33ff57;
+  --color-neo-purple: #a855f7;
+  --color-neo-orange: #ff9f1c;
+  --color-neo-red: #ff2a2a;
+  --color-neo-grey: #f1efe7;
+
+  --font-display: "Space Grotesk", "Arial Black", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", "Consolas", monospace;
+
+  --shadow-hard-xs: 2px 2px 0 #000;
+  --shadow-hard-sm: 4px 4px 0 #000;
+  --shadow-hard-md: 8px 8px 0 #000;
+  --shadow-hard-lg: 12px 12px 0 #000;
+}
+
+/* Self-hosted fonts (latin subsets, downloaded at setup — see README) */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/SpaceGrotesk-Variable-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/JetBrainsMono-Variable-latin.woff2") format("woff2");
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-mono);
+  color: var(--color-neo-black);
+  background-color: var(--color-neo-white);
+  /* cream page with a 1px black dot every 40px + faint grid every 100px */
+  background-image:
+    radial-gradient(circle, rgba(18, 18, 18, 0.55) 1px, transparent 1.6px),
+    linear-gradient(to right, rgba(18, 18, 18, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px, 100px 100px, 100px 100px;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-neo-yellow);
+  color: var(--color-neo-black);
+}
+
+/* Focus: thick black outline with a yellow offset ring (visible on dark too) */
+:focus-visible {
+  outline: 3px solid var(--color-neo-black);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--color-neo-yellow);
+}
+
+/* Native cursor is hidden only while the custom cursor is active */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Brutalist primitives
+--------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid var(--color-neo-black);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-hard-sm);
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out;
+}
+.btn:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 #000;
+}
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 #000;
+}
+
+.card-press {
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+}
+
+/* White fill + black stroke text (hero line 2, SELECTED WORKS) */
+.text-stroke {
+  color: var(--color-neo-white);
+  -webkit-text-stroke: 3px var(--color-neo-black);
+  paint-order: stroke fill;
+}
+@media (max-width: 767px) {
+  .text-stroke {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* Sticker badges */
+.sticker {
+  border: 2px solid var(--color-neo-black);
+  box-shadow: var(--shadow-hard-xs);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+/* Yellow marker highlight in copy */
+.marker {
+  background: linear-gradient(transparent 35%, var(--color-neo-yellow) 35%, var(--color-neo-yellow) 92%, transparent 92%);
+  padding: 0 0.15em;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal
+--------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* No-JS fallback: everything visible */
+html.no-js [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Marquee
+--------------------------------------------------------------------------- */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------------------
+   Glitch hover on project titles
+--------------------------------------------------------------------------- */
+@keyframes glitch-nudge {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+}
+.glitch-hover:hover {
+  animation: glitch-nudge 0.3s steps(2, end) infinite;
+  color: var(--color-neo-red);
+}
+@media (hover: none) {
+  .glitch-hover:hover {
+    animation: none;
+    color: inherit;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Custom cursor (desktop, fine pointer only — activated by scripts/cursor.ts)
+--------------------------------------------------------------------------- */
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 2px solid transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    left 0.1s linear,
+    top 0.1s linear,
+    width 0.2s ease,
+    height 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+#cursor.is-active {
+  opacity: 1;
+}
+#cursor.is-hover {
+  width: 60px;
+  height: 60px;
+  background: var(--color-neo-yellow);
+  border-color: var(--color-neo-black);
+  mix-blend-mode: normal;
+}
+
+/* ---------------------------------------------------------------------------
+   Tech tile hover fills (per-tile colour set inline via --tile-fill)
+--------------------------------------------------------------------------- */
+.tech-tile {
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+.tech-tile .tile-cat {
+  color: var(--color-neo-green);
+  transition: opacity 0.15s ease-out;
+}
+/* On hover the small category label steps aside: the fill colour can be
+   mid-luminance (blue), which cannot host 4.5:1 small text in any colour. */
+.tech-tile:hover .tile-cat {
+  opacity: 0;
+}
+.tech-tile:hover,
+.tech-tile:focus-visible {
+  background-color: var(--tile-fill, var(--color-neo-white));
+  color: var(--color-neo-black);
+}
+
+/* Pulsing status dot */
+.pulse-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: var(--color-neo-green);
+}
+.pulse-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-neo-green);
+  animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Greyscale portrait that fades to colour */
+.portrait-img {
+  filter: grayscale(1);
+  transition: filter 0.5s ease;
+}
+.portrait-img:hover,
+.portrait-img:focus-visible {
+  filter: grayscale(0);
+}
+
+/* Project screenshots sit at 80% opacity until hovered */
+.shot-img {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+.group:hover .shot-img,
+.shot-img:focus-visible {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Folio chat (floating widget + dedicated section)
+--------------------------------------------------------------------------- */
+.chat-log {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neo-black) transparent;
+}
+.chat-log::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-log::-webkit-scrollbar-thumb {
+  background: var(--color-neo-black);
+  border: 2px solid transparent;
+}
+
+.chat-typing span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 4px;
+  background: var(--color-neo-black);
+  animation: chat-bounce 1.2s infinite;
+}
+.chat-typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.chat-typing span:nth-child(3) {
+  animation-delay: 0.3s;
+  margin-right: 0;
+}
+@keyframes chat-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+/* Folio panel opens like the mascot unfolding his little workspace */
+#chat-panel.is-open {
+  animation: folio-panel-pop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 90% 95%;
+}
+@keyframes folio-panel-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion: switch every effect off
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+  .glitch-hover:hover {
+    animation: none;
+    color: inherit;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .pulse-dot::before {
+    animation: none;
+    opacity: 0;
+  }
+  .portrait-img,
+  .shot-img,
+  .btn,
+  .card-press,
+  .tech-tile {
+    transition: none;
+  }
+  #cursor {
+    display: none;
+  }
+  .chat-typing span {
+    animation: none;
+    opacity: 0.5;
+  }
+  #chat-panel.is-open {
+    animation: none;
+  }
+}

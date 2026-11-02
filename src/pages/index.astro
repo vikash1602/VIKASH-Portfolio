@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Experience from '../components/Experience.astro';
+import CodingStats from '../components/CodingStats.astro';
+import Projects from '../components/Projects.astro';
+import Reports from '../components/Reports.astro';
+import ChatSection from '../components/ChatSection.astro';
+import ChatWidget from '../components/ChatWidget.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+// Build-time gate: set CHATBOT_ENABLED=false to remove Folio entirely.
+// The /api/chat route independently enforces the same flag at runtime.
+const chatEnabled = String(import.meta.env.CHATBOT_ENABLED ?? process.env.CHATBOT_ENABLED ?? 'true') !== 'false';
+---
+
+<Layout
+  title="Vikash G | Full Stack Developer"
+  description="Vikash G is a Full Stack Developer specializing in Python, React, Django, machine learning and explainable AI. Explore his projects, experience and technical work."
+>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <Marquee />
+    <About />
+    <Skills />
+    <Experience />
+    <CodingStats />
+    <Projects />
+    <Reports />
+    {chatEnabled && <ChatSection />}
+    <Contact />
+  </main>
+  <Footer />
+  {chatEnabled && <ChatWidget />}
+</Layout>

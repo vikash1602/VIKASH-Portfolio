@@ -1,0 +1,19 @@
+---
+import { marquee } from '../data/content';
+
+const copy = marquee.map((item) => `/// ${item}`).join('  ');
+---
+
+<div
+  class="marquee relative z-10 border-y-4 border-neo-black bg-neo-blue py-3"
+  role="marquee"
+  aria-label="Skills ticker"
+>
+  <div class="marquee-track">
+    <!-- Two identical copies make the -50% translate loop seamless -->
+    <p class="pr-8 font-mono text-2xl font-bold whitespace-nowrap text-white">{copy}</p>
+    <p class="pr-8 font-mono text-2xl font-bold whitespace-nowrap text-white" aria-hidden="true"
+      >{copy}</p
+    >
+  </div>
+</div>

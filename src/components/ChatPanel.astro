@@ -1,0 +1,73 @@
+---
+/**
+ * The shared chat interface body — used by BOTH the floating widget and the
+ * dedicated TALK_TO_VIKASH.exe section. No unique ids (two instances mount);
+ * everything is wired via data-* attributes by src/scripts/chatbot.ts.
+ */
+import { SUGGESTED_QUESTIONS } from '../data/chatbotKnowledge';
+
+interface Props {
+  variant: 'widget' | 'section';
+}
+
+const { variant } = Astro.props;
+---
+
+<div class="flex min-h-0 flex-1 flex-col" data-chat-root data-variant={variant}>
+  <!-- Suggested questions (server-rendered, zero API calls) -->
+  <div class="flex flex-wrap gap-2 border-b-2 border-neo-black/10 px-3 py-2.5" data-chat-chips aria-label="Suggested questions">
+    {
+      SUGGESTED_QUESTIONS.map((q) => (
+        <button
+          type="button"
+          class="chat-chip border-2 border-neo-black bg-neo-white px-2 py-1 font-mono text-[11px] font-bold transition-colors hover:bg-neo-yellow"
+          data-chat-chip
+        >
+          {q}
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Conversation -->
+  <div
+    class="min-h-0 flex-1 space-y-3 overflow-y-auto bg-neo-grey/60 p-3"
+    data-chat-log
+    role="log"
+    aria-live="polite"
+    aria-label="Conversation with Folio"
+  ></div>
+
+  <!-- Composer -->
+  <form class="border-t-2 border-neo-black bg-white p-2.5" data-chat-form>
+    <div class="flex items-end gap-2">
+      <textarea
+        data-chat-input
+        rows="1"
+        maxlength="800"
+        placeholder="ASK FOLIO..."
+        aria-label="Message to Folio"
+        class="min-h-0 flex-1 resize-none border-2 border-neo-black bg-neo-white px-2.5 py-2 font-mono text-sm placeholder:text-neo-black/40"
+      ></textarea>
+      <button
+        type="submit"
+        data-chat-send
+        aria-label="Send message"
+        class="flex h-10 w-11 shrink-0 items-center justify-center border-2 border-neo-black bg-neo-blue text-white shadow-hard-xs transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="font-display text-lg font-bold" aria-hidden="true">→</span>
+      </button>
+    </div>
+    <div class="mt-1.5 flex items-center justify-between font-mono text-[11px] text-neo-black/50">
+      <span data-chat-count>0/800</span>
+      <span class="hidden sm:inline">ENTER: SEND // SHIFT+ENTER: NEW LINE</span>
+      <button
+        type="button"
+        data-chat-clear
+        class="font-bold text-neo-black/60 underline decoration-2 underline-offset-2 hover:text-neo-red"
+      >
+        CLEAR_CHAT
+      </button>
+    </div>
+  </form>
+</div>

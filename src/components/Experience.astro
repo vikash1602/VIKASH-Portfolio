@@ -1,0 +1,124 @@
+---
+import { experience } from '../data/content';
+
+const { education, internship, certifications } = experience;
+
+// 20px timeline nodes in rotating palette colours; org labels only in colours
+// with enough contrast on white (no yellow on white).
+// Cards are intentionally STRAIGHT — no static rotation, no pointer tilt —
+// for a clean, aligned timeline (refined per feedback).
+const nodeColors = ['bg-neo-yellow', 'bg-neo-pink', 'bg-neo-green', 'bg-neo-purple'];
+const orgColor = 'text-neo-blue';
+const orgColorAlt = 'text-neo-purple';
+
+const entries = [
+  {
+    kind: 'education' as const,
+    date: education.date,
+    node: nodeColors[0],
+    org: education.org,
+    orgClass: orgColorAlt,
+    title: education.title,
+  },
+  {
+    kind: 'internship' as const,
+    date: internship.date,
+    node: nodeColors[1],
+    org: internship.org,
+    orgClass: orgColor,
+    title: internship.title,
+  },
+  {
+    kind: 'certs' as const,
+    date: certifications.date,
+    node: nodeColors[2],
+    org: certifications.org,
+    orgClass: orgColorAlt,
+    title: certifications.title,
+  },
+];
+---
+
+<section id="experience" class="scroll-mt-24 py-24 md:py-32" aria-label="Career journey">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2
+      class="font-display text-[11vw] font-bold uppercase leading-none tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
+      data-reveal
+    >
+      {experience.headingWhite}<span class="text-neo-red">{experience.headingAccent}</span>
+    </h2>
+
+    <div class="relative mt-16 max-w-3xl">
+      <!-- Timeline spine -->
+      <span class="absolute top-2 bottom-2 left-[8px] w-1 bg-neo-black" aria-hidden="true"></span>
+
+      <ol class="space-y-10">
+        {
+          entries.map((entry) => (
+            <li class="relative pl-10 md:pl-14" data-reveal>
+              <span
+                class={`absolute top-6 left-0 h-5 w-5 border-2 border-neo-black ${entry.node}`}
+                aria-hidden="true"
+              />
+              <article class="border-4 border-neo-black bg-white p-6 shadow-hard-sm md:p-8">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="bg-neo-black px-3 py-1 font-mono text-xs font-bold tracking-widest text-white">
+                    {entry.date}
+                  </span>
+                  {entry.kind !== 'education' && (
+                    <span class={`font-mono text-xs font-bold tracking-widest ${entry.orgClass}`}>
+                      @ {entry.org}
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="mt-4 font-display text-2xl font-bold uppercase md:text-3xl">{entry.title}</h3>
+
+                {entry.kind === 'education' && (
+                  <div class="mt-4 space-y-2">
+                    <p class={`font-mono text-sm font-bold ${entry.orgClass}`}>{education.org}</p>
+                    <p class="font-mono text-sm font-bold">{education.cgpa}</p>
+                    <p class="text-sm leading-relaxed text-neo-black/80">{education.coursework}</p>
+                  </div>
+                )}
+
+                {entry.kind === 'internship' && (
+                  <ul class="mt-4 space-y-2.5">
+                    {internship.bullets.map((bullet) => (
+                      <li class="flex gap-2 text-sm leading-relaxed">
+                        <span class="font-bold text-neo-blue" aria-hidden="true">
+                          &gt;
+                        </span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {entry.kind === 'certs' && (
+                  <ul class="mt-4 space-y-4">
+                    {certifications.items.map((item) => (
+                      <li>
+                        {item.url ? (
+                          <a
+                            href={item.url}
+                            class="font-bold underline decoration-2 underline-offset-2 hover:bg-neo-yellow"
+                          >
+                            {item.title}
+                          </a>
+                        ) : (
+                          <span class="font-bold">{item.title}</span>
+                        )}
+                        <p class="mt-1 text-sm leading-relaxed text-neo-black/80">{item.detail}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

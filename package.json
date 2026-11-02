@@ -1,0 +1,32 @@
+{
+  "name": "vikash-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neo-brutalist single-page portfolio for Vikash G — Full Stack Developer",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run fetch:github && node scripts/seo.mjs && astro build",
+    "postbuild": "node scripts/check-placeholders.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "fetch:github": "node scripts/fetch-github.mjs",
+    "check:placeholders": "node scripts/check-placeholders.mjs",
+    "audit": "node scripts/security-audit.mjs",
+    "assets:images": "node scripts/generate-assets.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "11.0.17",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "26.6.6",
+    "@types/three": "^0.186.0",
+    "astro": "7.4.4",
+    "sharp": "0.35.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}

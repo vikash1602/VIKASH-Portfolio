@@ -1,0 +1,161 @@
+---
+import { contact, site } from '../data/content';
+
+const f = contact.fields;
+// Pre-filled subject so the email composer opens ready to go.
+const mailtoHref = `mailto:${site.email}?subject=${encodeURIComponent('Project Inquiry')}`;
+---
+
+<section id="contact" class="scroll-mt-24 py-24 md:py-32" aria-label="Contact">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div
+      class="relative border-4 border-neo-black bg-white p-6 shadow-hard-lg sm:p-10 md:p-14"
+      data-reveal
+    >
+      <span
+        class="sticker absolute -top-5 left-6 rotate-[-6deg] bg-neo-yellow px-4 py-2 text-sm font-bold md:-left-8"
+      >
+        {contact.sticker}
+      </span>
+
+      <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <h2 class="text-[9vw] font-bold uppercase leading-none tracking-tight sm:text-5xl md:text-6xl">
+            {contact.heading}
+          </h2>
+
+          {contact.availability && <p class="mt-6 text-base leading-relaxed">{contact.availability}</p>}
+
+          <div class="mt-8 space-y-4">
+            <p class="flex items-center gap-3">
+              <span
+                class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-neo-black bg-neo-yellow"
+                aria-hidden="true"
+              >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 5h18v14H3z"></path><path d="m3 6 9 7 9-7"></path>
+                </svg>
+              </span>
+              <a
+                href={mailtoHref}
+                class="font-bold underline decoration-2 underline-offset-4 hover:bg-neo-yellow"
+              >
+                {site.email}
+              </a>
+            </p>
+
+            {
+              contact.location && (
+                <p class="flex items-center gap-3">
+                  <span
+                    class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-neo-black bg-neo-pink"
+                    aria-hidden="true"
+                  >
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                  </span>
+                  <span class="font-bold">{contact.location}</span>
+                </p>
+              )
+            }
+          </div>
+
+          <p class="mt-10 font-mono text-xs tracking-widest text-neo-black/50">
+            $ contact --reply-within-48h _
+          </p>
+        </div>
+
+        <form
+          id="contact-form"
+          class="border-2 border-neo-black bg-neo-grey p-5 md:p-7"
+          method="POST"
+          action={contact.endpoint ?? undefined}
+          data-endpoint={contact.endpoint ?? ''}
+          data-contact-email={site.email}
+          novalidate
+        >
+          {/* Honeypot — hidden from humans, catches bots */}
+          <div class="hidden" aria-hidden="true">
+            <label for="hp-field">Leave this field empty</label>
+            <input id="hp-field" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <label for="cf-name" class="mb-1.5 block font-mono text-xs font-bold tracking-widest uppercase">
+                {f.name.label}
+              </label>
+              <input
+                id="cf-name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                placeholder={f.name.placeholder}
+                aria-describedby="cf-name-error"
+                class="w-full border-2 border-neo-black bg-white px-3 py-2.5 font-mono text-sm placeholder:text-neo-black/40"
+              />
+              <p id="cf-name-error" hidden class="mt-1.5 font-mono text-xs font-bold text-neo-red">
+                Please enter your name or company.
+              </p>
+            </div>
+
+            <div>
+              <label for="cf-email" class="mb-1.5 block font-mono text-xs font-bold tracking-widest uppercase">
+                {f.email.label}
+              </label>
+              <input
+                id="cf-email"
+                name="email"
+                type="email"
+                required
+                autocomplete="email"
+                placeholder={f.email.placeholder}
+                aria-describedby="cf-email-error"
+                class="w-full border-2 border-neo-black bg-white px-3 py-2.5 font-mono text-sm placeholder:text-neo-black/40"
+              />
+              <p id="cf-email-error" hidden class="mt-1.5 font-mono text-xs font-bold text-neo-red">
+                Please enter a valid email address.
+              </p>
+            </div>
+
+            <div>
+              <label for="cf-message" class="mb-1.5 block font-mono text-xs font-bold tracking-widest uppercase">
+                {f.message.label}
+              </label>
+              <textarea
+                id="cf-message"
+                name="message"
+                rows={f.message.rows}
+                required
+                placeholder={f.message.placeholder}
+                aria-describedby="cf-message-error"
+                class="w-full resize-y border-2 border-neo-black bg-white px-3 py-2.5 font-mono text-sm placeholder:text-neo-black/40"></textarea>
+              <p id="cf-message-error" hidden class="mt-1.5 font-mono text-xs font-bold text-neo-red">
+                Please add a few details about the project.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn mt-7 w-full justify-center bg-neo-blue text-xl text-white"
+            data-default-label={contact.submitLabel}
+          >
+            {contact.submitLabel}
+          </button>
+
+          <p
+            id="form-status"
+            role="status"
+            aria-live="polite"
+            class="mt-4 font-mono text-sm font-bold"
+          >
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

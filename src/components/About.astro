@@ -1,0 +1,123 @@
+
+---
+import { about } from '../data/content';
+
+const dev = import.meta.env.DEV;
+
+// Split the paragraph so the key word gets the yellow marker.
+const parts = about.paragraph.split(about.highlightWord);
+const marked = parts.length === 2;
+---
+
+<section id="about" class="scroll-mt-24 py-24 md:py-32" aria-label="About">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div
+      class="border-x-4 border-neo-black bg-white p-6 shadow-hard-md sm:p-10 md:p-14"
+      data-reveal
+      data-tilt
+    >
+      <div class="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+
+        <!-- Portrait -->
+        <div class="relative mx-auto w-full max-w-sm lg:mx-0">
+          <div class="border-4 border-neo-black bg-neo-black shadow-hard-md">
+            <img
+              src={about.portrait}
+              alt="Portrait of Vikash G in a dark suit and tie"
+              width="900"
+              height="1195"
+              class="portrait-img block h-auto w-full"
+              loading="lazy"
+            />
+          </div>
+
+          <span
+            class="sticker absolute -top-3 -left-3 rotate-[-4deg] bg-neo-red px-2 py-1 text-xs font-bold text-neo-black"
+          >
+            {about.portraitTag}
+          </span>
+        </div>
+
+        <!-- About content -->
+        <div>
+          <h2 class="font-display text-5xl font-bold uppercase tracking-tight sm:text-6xl md:text-7xl">
+            {about.heading}
+          </h2>
+
+          <p class="mt-8 text-base leading-relaxed md:text-lg">
+            {
+              marked ? (
+                <>
+                  {parts[0]}
+                  <mark class="marker bg-transparent font-bold">
+                    {about.highlightWord}
+                  </mark>
+                  {parts[1]}
+                </>
+              ) : (
+                about.paragraph
+              )
+            }
+          </p>
+
+          <!-- Highlights -->
+          <ul class="mt-8 space-y-3">
+            {
+              about.pullLines.map((line) => (
+                <li class="border-l-4 border-neo-purple pl-4 font-bold">
+                  <span
+                    class="mr-1 text-neo-purple"
+                    aria-hidden="true"
+                  >
+                    &gt;
+                  </span>
+                  {line}
+                </li>
+              ))
+            }
+          </ul>
+
+          <!-- Location and availability -->
+          <div class="mt-10 flex flex-wrap gap-3">
+
+            <!-- Location badge -->
+            {
+              about.location ? (
+                <span class="sticker inline-flex items-center gap-2 bg-neo-black px-3 py-2 text-xs font-bold uppercase text-white">
+                  <span aria-hidden="true">📍</span>
+                  LOCATION: {about.location.toUpperCase()}
+                </span>
+              ) : (
+                dev && (
+                  <span class="sticker animate-pulse bg-neo-red px-3 py-1.5 text-xs font-bold text-neo-black">
+                    [[PROVIDE: LOCATION]]
+                  </span>
+                )
+              )
+            }
+
+            <!-- Availability badge -->
+            {
+              about.status ? (
+                <span class="sticker inline-flex items-center gap-2 bg-neo-green px-3 py-2 text-xs font-bold uppercase text-neo-black">
+                  <span
+                    class="inline-block h-2.5 w-2.5 rounded-full bg-white"
+                    aria-hidden="true"
+                  ></span>
+                  STATUS: {about.status.toUpperCase()}
+                </span>
+              ) : (
+                dev && (
+                  <span class="sticker animate-pulse bg-neo-red px-3 py-1.5 text-xs font-bold text-neo-black">
+                    [[PROVIDE: STATUS]]
+                  </span>
+                )
+              )
+            }
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

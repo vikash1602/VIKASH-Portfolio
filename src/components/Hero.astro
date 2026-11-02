@@ -1,0 +1,67 @@
+---
+import { hero } from '../data/content';
+---
+
+<section class="relative flex min-h-screen items-center overflow-hidden pt-24" aria-label="Introduction">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl" data-reveal>
+      <p
+        class="sticker inline-flex -rotate-2 items-center gap-2 bg-neo-white px-3 py-1.5 text-xs font-bold"
+      >
+        <span class="inline-block h-3 w-3 bg-neo-green" aria-hidden="true"></span>
+        {hero.statusChip}
+      </p>
+
+      <h1
+        class="mt-8 font-display font-bold uppercase leading-[0.8] tracking-tight text-neo-black text-[13vw] md:text-[10vw] lg:text-[9vw]"
+      >
+        <span class="block whitespace-nowrap">{hero.titleLine1}</span>
+        <span class="text-stroke block whitespace-nowrap">{hero.titleLine2}</span>
+      </h1>
+
+      <p
+        class="mt-10 inline-block rotate-1 border-2 border-neo-black bg-neo-yellow p-4 text-base shadow-hard-sm md:p-5 md:text-lg"
+      >
+        {hero.tagline}
+        <strong class="mt-1 block">{hero.taglineBold}</strong>
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href={hero.buttons.projects.href} class="btn bg-neo-black text-neo-white">
+          {hero.buttons.projects.label} <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href={hero.buttons.cv.href}
+          download
+          class="btn bg-neo-white text-neo-black"
+        >
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"></path>
+          </svg>
+          {hero.buttons.cv.label}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ghost word -->
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute right-0 bottom-0 translate-x-[20%] translate-y-[18%] font-display font-bold text-neo-black opacity-5 select-none text-[34vw] leading-none whitespace-nowrap"
+  >
+    {hero.ghostWord}
+  </span>
+
+  <p
+    class="absolute bottom-4 left-4 hidden font-mono text-xs tracking-widest text-neo-black/50 lg:block"
+  >
+    $ init portfolio.exe _
+  </p>
+</section>

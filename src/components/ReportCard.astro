@@ -1,0 +1,36 @@
+---
+interface Props {
+  index: number;
+  quote: string;
+  name: string;
+  org: string;
+  year: string;
+  rating: number | null;
+  barColor: string;
+}
+
+const { index, quote, name, org, year, rating, barColor } = Astro.props;
+---
+
+<figure
+  class="relative w-[450px] max-w-full shrink-0 overflow-hidden bg-neo-black p-6 shadow-hard-md border-4 border-white/10"
+  style={`border-top-color: ${barColor}`}
+>
+  <figcaption
+    class="flex items-center justify-between gap-3 font-mono text-xs font-bold tracking-widest"
+    style={`color: ${barColor}`}
+  >
+    <span>REPORT_{String(index + 1).padStart(3, '0')}.log</span>
+    <span class="text-white/50">{year}.txt</span>
+  </figcaption>
+  <blockquote class="mt-4 font-bold text-white">&ldquo;{quote}&rdquo;</blockquote>
+  <p class="mt-4 font-mono text-xs tracking-widest text-white/60">FROM: {name} @ {org}</p>
+  {
+    rating != null && (
+      <p class="mt-2 font-mono text-xs text-neo-yellow" aria-label={`Rated ${rating} out of 5`}>
+        {'★'.repeat(Math.round(rating))}
+        <span class="text-white/25">{'★'.repeat(5 - Math.round(rating))}</span>
+      </p>
+    )
+  }
+</figure>

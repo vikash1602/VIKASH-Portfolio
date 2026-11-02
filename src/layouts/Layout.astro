@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import { site, skills, openItems } from '../data/content';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const siteUrl = (Astro.site ?? new URL(site.siteUrl)).toString().replace(/\/+$/, '');
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImage = `${siteUrl}/og-image.png`;
+
+const knowsAbout = [...new Set(skills.tiles.map((t) => t.name))];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  email: `mailto:${site.email}`,
+  url: siteUrl,
+  sameAs: [site.github.url, site.linkedin],
+  knowsAbout,
+};
+
+// Surface unresolved inputs loudly in every production build log.
+if (!import.meta.env.DEV) {
+  console.warn(
+    `\n[placeholders] ${openItems.length} item(s) still open — see src/data/content.ts (openItems) and README.md:\n` +
+      openItems.map((i) => `  - ${i.state} ${i.item} (${i.usedIn})`).join('\n') +
+      '\n',
+  );
+}
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121212" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Self-hosted fonts, preloaded (above-the-fold pair) -->
+    <link
+      rel="preload"
+      href="/fonts/SpaceGrotesk-Variable-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/JetBrainsMono-Variable-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VIKASH.exe" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+  </head>
+
+  <body id="top" class="antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:border-2 focus:border-neo-black focus:bg-neo-yellow focus:px-4 focus:py-2 focus:font-bold"
+    >
+      SKIP TO CONTENT
+    </a>
+
+    <!-- Scroll progress -->
+    <div
+      id="progress"
+      aria-hidden="true"
+      class="fixed top-0 left-0 z-[90] h-2 w-full origin-left scale-x-0 border-b-2 border-neo-black bg-neo-green"
+    >
+    </div>
+
+    <!-- Three.js wireframe scene -->
+    <canvas
+      id="bg3d"
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 z-0 h-full w-full"
+    >
+    </canvas>
+
+    <!-- Custom cursor -->
+    <div id="cursor" aria-hidden="true"></div>
+
+    <div class="relative z-10">
+      <slot />
+    </div>
+
+    <script>
+      import '../scripts/boot-background';
+      import '../scripts/cursor';
+      import '../scripts/effects';
+      import '../scripts/github-live';
+      import '../scripts/chatbot';
+    </script>
+  </body>
+</html>

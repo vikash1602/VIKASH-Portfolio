@@ -1,0 +1,49 @@
+---
+import { skills } from '../data/content';
+
+// Each tile fills with a different palette colour on hover (black text).
+const fills = [
+  '#FFFDF5',
+  '#FBFF48',
+  '#3B82F6',
+  '#FF70A6',
+  '#FF9F1C',
+  '#A855F7',
+  '#33FF57',
+  '#FF2A2A',
+];
+---
+
+<section id="skills" class="scroll-mt-24 border-y-4 border-neo-black bg-neo-black py-24 text-white md:py-32" aria-label="Tech stack">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <h2 class="font-display text-[11vw] font-bold uppercase leading-none tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+        {skills.headingWhite}<span class="text-neo-green">{skills.headingAccent}</span>
+      </h2>
+      <p class="flex items-center gap-3 font-mono text-xs font-bold tracking-widest text-white/70">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        {skills.systemLabel}
+      </p>
+    </div>
+
+    <ul class="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8" data-reveal>
+      {
+        skills.tiles.map((tile, i) => (
+          <li
+            class="tech-tile flex h-24 flex-col justify-between border-2 border-white/20 p-3"
+            style={`--tile-fill: ${fills[i % fills.length]}`}
+          >
+            <span class="tile-cat font-mono text-[11px] font-bold tracking-widest">
+              &gt;_ {tile.category}
+            </span>
+            <span class="text-xl leading-tight font-bold uppercase">{tile.name}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-8 font-mono text-sm font-bold tracking-widest text-white/60" data-reveal>
+      TOTAL_NODES: {skills.tiles.length}
+    </p>
+  </div>
+</section>

@@ -1,0 +1,101 @@
+---
+import { site, nav, hero } from '../data/content';
+
+const dev = import.meta.env.DEV;
+---
+
+<header class="fixed inset-x-0 top-0 z-50">
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between gap-3 p-4"
+    aria-label="Main navigation"
+  >
+    <a
+      href="#top"
+      class="bg-neo-black px-3 py-2 font-mono text-sm font-bold text-neo-green shadow-hard-sm transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+    >
+      {site.logo}<span class="ml-1 inline-block h-3 w-2 animate-pulse bg-neo-green align-middle"></span>
+    </a>
+
+    <!-- Desktop link bar -->
+    <div
+      class="hidden items-center gap-1 border-2 border-neo-black bg-white p-1 shadow-hard-sm md:flex"
+    >
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="px-3 py-2 font-mono text-sm font-bold transition-colors hover:bg-neo-pink"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href="#contact"
+        class="sticker ml-1 bg-neo-yellow px-3 py-2 text-sm font-bold transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+      >
+        HIRE ME
+      </a>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button
+      id="menu-btn"
+      type="button"
+      class="border-2 border-neo-black bg-white p-2 shadow-hard-sm md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="sr-only">MENU</span>
+      <svg
+        class="h-6 w-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        aria-hidden="true"
+      >
+        <path class="menu-open-icon" d="M3 6h18M3 12h18M3 18h18"></path>
+        <path class="menu-close-icon hidden" d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile panel -->
+  <div
+    id="mobile-menu"
+    class="hidden border-y-4 border-neo-black bg-neo-black px-4 py-6 md:hidden"
+  >
+    <ul class="flex flex-col gap-2">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="mobile-link block border-2 border-white/20 px-4 py-3 font-mono text-lg font-bold text-white transition-colors hover:bg-neo-pink hover:text-neo-black"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a
+          href="#contact"
+          class="mobile-link block border-2 border-neo-black bg-neo-yellow px-4 py-3 font-mono text-lg font-bold text-neo-black"
+        >
+          HIRE ME
+        </a>
+      </li>
+      <li>
+        <a
+          href={site.resumePdf}
+          download
+          class="mobile-link block border-2 border-white/20 px-4 py-3 font-mono text-lg font-bold text-white transition-colors hover:bg-neo-green hover:text-neo-black"
+        >
+          DOWNLOAD CV
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
